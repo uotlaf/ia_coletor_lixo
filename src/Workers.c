@@ -4,18 +4,21 @@
  *      Author: uotlaf
  */
 
-#define _GNU_SOURCE		// warning: implicit declaration of function ‘pthread_setname_np’
+#define _GNU_SOURCE			// warning: implicit declaration of function ‘pthread_setname_np’
 #include <Workers.h>
-#include <Terminal.h> 	// Window
-#include <unistd.h>		// read
-#include <Time.h>		// Cronometer
-#include <pthread.h>	// pthread_setname_np
-#include <stdio.h>		// sprintf
-#include <Ansi.h>		// ANSI_TERMINAL_CLEAR
-#include <math.h>		// pow()
-#include <Menu.h>		// drawMainMenu
-#include <ctype.h>		// iscntrl()
-#include <Agent/Simple.h> // Simple Agent
+#include <Terminal.h> 		// Window
+#include <unistd.h>			// read
+#include <Time.h>			// Cronometer
+#include <pthread.h>		// pthread_setname_np
+#include <stdio.h>			// sprintf
+#include <Ansi.h>			// ANSI_TERMINAL_CLEAR
+#include <math.h>			// pow()
+#include <Menu.h>			// drawMainMenu
+#include <ctype.h>			// iscntrl()
+#include <Agent/Simple.h> 	// Simple Agent
+#include <Agent/Model.h>	// Model Agent
+#include <Agent/Objective.h>// Objective Agent
+#include <Agent/Utility.h>	// Utility Agent
 
 pthread_t inputThread;
 pthread_t renderThread;
@@ -29,6 +32,8 @@ void* inputWorker(void* workerPKG) {
 	if (!(pkg) || !(*pkg->window)) return NULL;
 	// Recebe algum caractere do terminal
 	char c; // Caractere pego do terminal
+	Trash* tempt;
+	Agent* agent;
 
 	do {
 		c = '\0';
@@ -66,13 +71,16 @@ void* inputWorker(void* workerPKG) {
 								(*pkg->window)->console.row		= defaultOptions.fieldRows;
 								(*pkg->window)->console.historySize = (*pkg->window)->console.row;
 								(*pkg->window)->pause 			= false;
+								(*pkg->window)->steps			= 0;
+								(*pkg->window)->execTimeUs		= 0;
+
 								
 								// Prepara o lixo
-								Trash* tempt = genTrashList(defaultOptions.seed, &(*pkg->window), defaultOptions.trashOrg, defaultOptions.trashRec);
+								tempt = genTrashList(defaultOptions.seed, &(*pkg->window), defaultOptions.trashOrg, defaultOptions.trashRec);
 								pkg->trash = &tempt;
 
 								// Prepara o agente
-								Agent* agent = newSimpleAgent(0, 0, 0);
+								agent = newSimpleAgent(0, 0, 0);
 								pkg->agent = &agent;
 
 								// Destrava o updateWorker
@@ -88,12 +96,100 @@ void* inputWorker(void* workerPKG) {
 								break;
 							case 1:
 								// Selecionado Agente baseado em modelo
+								// Prepara a janela para o agente
+								(*pkg->window)->fieldRows 		= defaultOptions.fieldRows;
+								(*pkg->window)->fieldColumns 	= defaultOptions.fieldColumns;
+								(*pkg->window)->fpsLimit		= defaultOptions.fpsLimit;
+								(*pkg->window)->tpsLimit		= defaultOptions.tpsLimit;
+								(*pkg->window)->console.row		= defaultOptions.fieldRows;
+								(*pkg->window)->console.historySize = (*pkg->window)->console.row;
+								(*pkg->window)->pause 			= false;
+								(*pkg->window)->steps			= 0;
+								(*pkg->window)->execTimeUs		= 0;
+								
+								// Prepara o lixo
+								tempt = genTrashList(defaultOptions.seed, &(*pkg->window), defaultOptions.trashOrg, defaultOptions.trashRec);
+								pkg->trash = &tempt;
+
+								// Prepara o agente
+								agent = newModelAgent(0, 0, 0);
+								pkg->agent = &agent;
+
+								// Destrava o updateWorker
+								pthread_mutex_unlock(&((*pkg->window)->UpdateStart));
+
+								// Atualiza o título da janela
+								(*pkg->window)->title = agent->name;
+
+								// Inicia o algoritmo
+								(*pkg->window)->state = WINSTATE_EXEC;
+								receivedSIGWINCH = true;
+								menuSelected = 0;
 								break;
 							case 2:
 								// Selecionado Agente Baseado em Objetivos
+								// Prepara a janela
+								(*pkg->window)->fieldRows 		= defaultOptions.fieldRows;
+								(*pkg->window)->fieldColumns 	= defaultOptions.fieldColumns;
+								(*pkg->window)->fpsLimit		= defaultOptions.fpsLimit;
+								(*pkg->window)->tpsLimit		= defaultOptions.tpsLimit;
+								(*pkg->window)->console.row		= defaultOptions.fieldRows;
+								(*pkg->window)->console.historySize = (*pkg->window)->console.row;
+								(*pkg->window)->pause 			= false;
+								(*pkg->window)->steps			= 0;
+								(*pkg->window)->execTimeUs		= 0;
+								
+								// Prepara o lixo
+								tempt = genTrashList(defaultOptions.seed, &(*pkg->window), defaultOptions.trashOrg, defaultOptions.trashRec);
+								pkg->trash = &tempt;
+
+								// Prepara o agente
+								agent = newObjectiveAgent(0, 0, 0);
+								pkg->agent = &agent;
+
+								// Destrava o updateWorker
+								pthread_mutex_unlock(&((*pkg->window)->UpdateStart));
+
+								// Atualiza o título da janela
+								(*pkg->window)->title = agent->name;
+
+								// Inicia o algoritmo
+								(*pkg->window)->state = WINSTATE_EXEC;
+								receivedSIGWINCH = true;
+								menuSelected = 0;
 								break;
 							case 3:
-								// Selecionado Agente baseado em Utilidadaes
+								// Selecionado Agente baseado em Utilidades
+								// Prepara a janela
+								(*pkg->window)->fieldRows 		= defaultOptions.fieldRows;
+								(*pkg->window)->fieldColumns 	= defaultOptions.fieldColumns;
+								(*pkg->window)->fpsLimit		= defaultOptions.fpsLimit;
+								(*pkg->window)->tpsLimit		= defaultOptions.tpsLimit;
+								(*pkg->window)->console.row		= defaultOptions.fieldRows;
+								(*pkg->window)->console.historySize = (*pkg->window)->console.row;
+								(*pkg->window)->pause 			= false;
+								(*pkg->window)->steps			= 0;
+								(*pkg->window)->execTimeUs		= 0;
+								
+								// Prepara o lixo
+								tempt = genTrashList(defaultOptions.seed, &(*pkg->window), defaultOptions.trashOrg, defaultOptions.trashRec);
+								pkg->trash = &tempt;
+
+								// Prepara o agente
+								agent = newUtilityAgent(0, 0, 0);
+								pkg->agent = &agent;
+
+								// Destrava o updateWorker
+								pthread_mutex_unlock(&((*pkg->window)->UpdateStart));
+
+								// Atualiza o título da janela
+								(*pkg->window)->title = agent->name;
+
+								// Inicia o algoritmo
+								(*pkg->window)->state = WINSTATE_EXEC;
+								receivedSIGWINCH = true;
+								menuSelected = 0;
+								break;
 								break;
 							case 4:
 								// Selecionado Configurações
@@ -322,6 +418,20 @@ void* inputWorker(void* workerPKG) {
 								pthread_mutex_unlock(&((*pkg->window)->WriteLock));
 							}
 							break;
+						case 'w' : // Aumentar o tps só se for menor que 999
+							if ((*pkg->window)->tpsLimit < 999) {
+								pthread_mutex_lock(&((*pkg->window)->WriteLock));
+								(*pkg->window)->tpsLimit++;
+								pthread_mutex_unlock(&((*pkg->window)->WriteLock));
+							}
+							break;
+						case 'q' : // Diminuir TPS
+							if ((*pkg->window)->tpsLimit > 1) {
+								pthread_mutex_lock(&((*pkg->window)->WriteLock));
+								(*pkg->window)->tpsLimit--;
+								pthread_mutex_unlock(&((*pkg->window)->WriteLock));
+							}
+							break;
 						case 'f': // Habilita/desabilita o limite de framerate
 							pthread_mutex_lock(&((*pkg->window)->WriteLock));
 							if ((*pkg->window)->fpsLimit) { // Se está ativado, desativa
@@ -508,6 +618,7 @@ void* drawWorker(void* workerPKG) {
 				drawHold(pkg->window);
 				drawSteps(pkg->window);
 				drawPause(pkg->window);
+				drawTime(pkg->window);
 				drawRank((*pkg->agent)->score, pkg->window);
 
 				pthread_mutex_lock(&((*pkg->window))->UpdateLock);
@@ -592,7 +703,7 @@ void* updateWorker(void* workerPKG) {
 					pthread_mutex_lock(&((*pkg->window))->UpdateLock);
 
 					// Se não tem mais nenhum lixo, pausa o programa
-					if (!(*pkg->trash) && !(*pkg->agent)->hold) {
+					if (!(*pkg->trash) && !(*pkg->agent)->holdItem) {
 						(*pkg->window)->pause = true;
 					} else {
 						(*pkg->agent)->run(pkg->agent, &(*pkg->trash), &(*pkg->window));
@@ -622,11 +733,14 @@ void* updateWorker(void* workerPKG) {
 		// Após dormir, recalcula o fps
 		stopCronometer(&(*pkg->window)->tpsCount);
 		tickTimeAct = cronToInt((&((*pkg->window)->tpsCount)));
-		
 		// Guarda o framerate atual em window->fps
 		// frametimeAct deve estar em sec
 		// +1 = A conta sempre dá no limite do quadro anterior
 		(*pkg->window)->tps = (1.0f / ((float)tickTimeAct/1000000.0f)) + 1;
+		// Aumenta o execTimeUs da janela
+		if (!(*pkg->window)->pause) {
+			(*pkg->window)->execTimeUs += tickTimeAct;
+		}
 
 	} while ((*pkg->window)->updateWorker);
 	return NULL;

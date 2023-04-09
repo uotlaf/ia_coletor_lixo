@@ -84,7 +84,7 @@ Window* newWindow(	uint16_t fieldRows, uint16_t fieldCol,
 	// Footer
 	ret->rank = 0;
 	ret->steps = 0;
-	ret->sec = 0;
+	ret->execTimeUs = 0;
 	ret->hold = 0;
 	// Time and framing
 	ret->fpsLimit = fpsLimit;
@@ -387,7 +387,7 @@ void drawSteps(Window** window) {
 	
 	// Desenha a quantidade de passos que o agente fez
  	char text[sizeof((*window)->steps)*(STEPS_SIZE+1)];
- 	sprintf(text, "%05d", (*window)->steps);
+ 	sprintf(text, "%04d", (*window)->steps);
  	drawObject(text, ANSI_COLOR_RESET, FLOOR_COLOR, 0, (*window)->fieldRows, window);
 }
 
@@ -401,13 +401,13 @@ void drawHold(Window** window) {
  	drawObject(&c, ANSI_COLOR_NONE, FLOOR_COLOR, -1, (*window)->fieldRows-1, window);
 }
 
-void drawTime(float ms, Window** window) {
+void drawTime(Window** window) {
 	if (!window || !(*window)) return;
 
 	// Desenha o tempo passado desde o início da execução do agente
  	char buf[400];
- 	sprintf(buf, "%.2fs", ms/1000);
- 	drawObject(buf, ANSI_COLOR_NONE, ANSI_COLOR_NONE, (*window)->fieldColumns/2-(strlen(buf)/2), (*window)->fieldRows, window);
+ 	sprintf(buf, "%.1fs", ((float)(*window)->execTimeUs)/1000000);
+ 	drawObject(buf, (*window)->colors.consoleForeground, FLOOR_COLOR, (*window)->fieldColumns - RANK_SIZE - 1 - FPS_SIZE - 1 - TPS_SIZE - 1 - TIME_SIZE, (*window)->fieldRows, window);
 }
 
 void drawConsoleFrame(Window** window) {
@@ -582,7 +582,7 @@ void drawFPS(Window** window) {
 	if (!window || !(*window)) return;
 	char buffer[10];
 	// Desenha o contador de fps
-	sprintf(buffer, "%05d", (*window)->fps);
+	sprintf(buffer, "%03d", (*window)->fps);
 	drawObject(buffer, (*window)->colors.consoleText, (*window)->colors.boxBackground, (*window)->fieldColumns - RANK_SIZE - 1 - FPS_SIZE, (*window)->fieldRows, window);
 }
 
@@ -590,7 +590,7 @@ void drawTPS(Window** window) {
 	if (!window || !(*window)) return;
 	char buffer[10];
 	// Desenha o contador de fps
-	sprintf(buffer, "%05d", (*window)->tps);
+	sprintf(buffer, "%03d", (*window)->tps);
 	drawObject(buffer, (*window)->colors.boxForeground, (*window)->colors.boxBackground, (*window)->fieldColumns - RANK_SIZE - 1 - FPS_SIZE - 1 - TPS_SIZE, (*window)->fieldRows, window);
 }
 // Terminal specials

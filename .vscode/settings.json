@@ -2,6 +2,12 @@
     "files.associations": {
         "terminal.h": "c",
         "string.h": "c",
-        "memory_resource": "c"
+        "memory_resource": "c",
+        "*.tcc": "c",
+        "fstream": "c",
+        "functional": "c",
+        "*.inc": "c",
+        "string_view": "c",
+        "stdlib.h": "c"
     }
 }

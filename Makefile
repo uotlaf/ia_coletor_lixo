@@ -1,6 +1,6 @@
 # Configuração do programa
 AGENTE = 0
-AGENTE_TPS = 60
+AGENTE_TPS = 200
 CAMPO_ALTURA = 20
 CAMPO_LARGURA = 20
 QUANT_LIXO_REC = 5
@@ -32,13 +32,16 @@ OBJECTS  = \
 	$(SOURCE)/Lixo.c \
 	$(SOURCE)/Agent/Agent.c \
 	$(SOURCE)/Agent/Simple.c \
+	$(SOURCE)/Agent/Model.c \
+	$(SOURCE)/Agent/Objective.c \
+	$(SOURCE)/Agent/Utility.c \
 	$(SOURCE)/Workers.c \
 	$(SOURCE)/Time.c \
 	$(SOURCE)/Menu.c
 BUILD_DIR= ./
 
 # Bibliotecas ligadas ao programa
-LIBS = 
+LIBS = -lm -lpthread
 
 ifneq ($(DRAW_SHADOW), )
 CFLAGS += -DDRAW_SHADOW

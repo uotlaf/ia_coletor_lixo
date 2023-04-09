@@ -127,7 +127,7 @@ Trash* addTrashinList(Trash* tr, Trash* list) {
 	// verifica se o cur == NULL. Se sim, adicionamos no início da fila
 	if (!cur) {
 		tr->next = next;
-		return tr;
+			return tr;
 	}
 
 	// se não, adiciona entre o escolhido e o next
@@ -137,6 +137,25 @@ Trash* addTrashinList(Trash* tr, Trash* list) {
 	}
 	cur->next = tr;
 	return list;
+}
+
+Trash* copyTrashToList(Trash* tr, Trash* list) {
+	// Faz outro lixo na lista list e copia o X e Y dele pra lá
+	
+	if (!tr) {
+		return NULL;
+	}
+
+	Trash* copy = (Trash*)malloc(sizeof(Trash));
+	if (!copy) {
+		return NULL;
+	}
+
+	copy->x 	= tr->x;
+	copy->y 	= tr->y;
+	copy->value = tr->value;
+
+	return addTrashinList(copy, list);
 }
 
 void removeTrashfromList(Trash* tr, Trash** list) {
@@ -190,16 +209,15 @@ bool destroyTrashList(Trash** tr) {
 
 void drawTrash(Trash** list, Window** window) {
 	Trash* pos = (*list);
-	char trashColor[20];
-
-	updateConsole("Lixo: Desenhando", window);
 
 	while (pos) {
-		uint8_t color = pos->value * (255/MAX_VALUE);
-		sprintf(trashColor, ANSI_COLOR_FOREGROUND, color, 255, color );
-		
-		drawObject(TRASH_ICON, trashColor, (*window)->colors.boxBackground, pos->x, pos->y, window);
+		if (pos->value == 5) {
+			drawObject(UTF_RECICLE, (*window)->colors.fontForeground, (*window)->colors.boxBackground, pos->x, pos->y, window);
+		} else {
+			drawObject(UTF_ORGANIC, (*window)->colors.fontForeground, (*window)->colors.boxBackground, pos->x, pos->y, window);
+		}
 		pos = pos->next;
+
 	}
 }
 

@@ -28,6 +28,8 @@ bool checkTrashinList(Trash* tr, Trash* list);
 
 Trash* addTrashinList(Trash* tr, Trash* list);
 
+Trash* copyTrashToList(Trash* tr, Trash* list);
+
 void removeTrashfromList(Trash* tr, Trash** list);
 
 bool destroyTrashList(Trash** tr);

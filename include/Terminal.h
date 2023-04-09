@@ -16,10 +16,11 @@
 #include <Time.h>		// Cronometer
 
 // default
-#define STEPS_SIZE 	5 // Define quantos caracteres vão ser escritos na área de passos
+#define STEPS_SIZE 	4 // Define quantos caracteres vão ser escritos na área de passos
 #define RANK_SIZE 	2 // Quantos chars vão ser escritos na área de rank
-#define FPS_SIZE	5 // Quantos chars vão ser escritos na área de fps
-#define TPS_SIZE	5
+#define FPS_SIZE	3 // Quantos chars vão ser escritos na área de fps
+#define TPS_SIZE	3
+#define TIME_SIZE   4
 
 // Variables
 extern bool receivedSIGWINCH; // Guarda para recuperar o estado da janela no próximo loop
@@ -66,7 +67,7 @@ typedef struct __window__ {
 	char* 			title;					// Título da janela, desenhado em cima do frame
 	// Footer
 	uint16_t 		rank, steps;			// Valores do rodapé da página
-	float 			sec;					// Tempo guardado no rodapé da página
+	uint64_t 		execTimeUs;				// Tempo guardado no rodapé da página
 	uint8_t			hold;					// Valor do item que o agente segura
 	// Time and framing
 	uint16_t		fpsLimit, fps;			// Guarda o limite e o fps atual
@@ -113,7 +114,7 @@ void drawRank (uint16_t rank, Window** window);
 void drawPause(Window** window);
 void drawSteps(Window** window);
 void drawHold (Window** window);
-void drawTime (float ms, Window** window);
+void drawTime (Window** window);
 void drawFPS(Window** window);
 void drawTPS(Window** window);
 

@@ -19,7 +19,7 @@
 #define UTF_BOTTOM		"═"
 #define UTF_BOTTOMRIGHT "╝"
 
-#define UTF_PERSON 		"🤖"
+#define UTF_PERSON 		"Ѫ"
 #define UTF_BIN 		"🗑"
 #define UTF_COMPUTER 	"💻"
 #define UTF_WINDOW 		"🗔"
@@ -27,6 +27,8 @@
 #define UTF_HAND		"✋"
 #define UTF_FLOWER		"✿"
 #define UTF_CHECKMARK	"✓"
+#define UTF_RECICLE     "♻"
+#define UTF_ORGANIC     "֍"
 
 #define UTF_ARROW_HOR 	"↔"
 #define UTF_ARROW_VER 	"↕"
