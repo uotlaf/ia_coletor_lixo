@@ -19,4 +19,4 @@ Ambiente: Linux/gcc \
 Arquivos fonte: Todos em [./src](./src) \
 Cabeçalhos: Todos em [./include](./include)
 
-Alunos: [Uotlaf](https://github.com/uotlaf/) 
+Alunos: [Uotlaf](https://github.com/uotlaf/) e [Gabriel Silva](https://github.com/gabrielsilva28)

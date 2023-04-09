@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "terminal.h": "c",
+        "string.h": "c",
+        "memory_resource": "c"
+    }
+}
