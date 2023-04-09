@@ -10,6 +10,7 @@
 #include <Ansi.h>
 #include <UTF_char.h>
 #include <Terminal.h> // drawObject
+#include <Lixo.h>
 
 Agent* newAgent(uint16_t initialX, uint16_t initialY, uint16_t initialScore) {
 	Agent* temp = (Agent*)malloc(sizeof(Agent));
@@ -112,7 +113,7 @@ void _clean(Agent** aG, Window** window) {
 
 }
 
-float findYinLine(int x, int Ax, int Ay, int Bx, int By) {
+float findYinLine(uint16_t x, uint16_t Ax, uint16_t Ay, uint16_t Bx, uint16_t By) {
 	/* Baseado na equação geral da reta entre o ponto A e B, acha o valor de Y para o qual x=x
 	 * Argumentos:
 	 * x = Ponto X para qual retornar Y
@@ -132,10 +133,42 @@ float findYinLine(int x, int Ax, int Ay, int Bx, int By) {
 	m = num / den;
 	n = -(m * Ax) + Ay;
 
+	// Casos especiais
+
+	if (m == 0) {
+		return n;
+	}
+
 	if (n == 0) {
-		return ((float)Ay / (float)Ax) * (float)x;
+		return m*x;
+		//return ((float)Ay / (float)Ax) * (float)x;
 	}
 	return m * (float)x + n;
+}
+
+TrashLocation* checkForTrashInFOV(Agent** aG, Trash** trList) {
+	// Checa se existe um lixo nas redondezas e retorna a posição dele
+	// Se não encontrar ninguém, retorna NULL
+	if (!aG || (!*aG) || !trList || !(*trList)) return NULL;
+	TrashLocation* ret = NULL;
+	// Checa todas as direções
+	for (int x = -1; x < 2; x++) {
+		for (int y = -1; y < 2; y++) {
+			if (containsTrashin(*trList, (*aG)->x+x, (*aG)->y+y)) {
+				// Retorna a localização do próximo lixo
+				ret = (TrashLocation*)malloc(sizeof(TrashLocation));
+				if (!ret) return NULL;
+				ret->x = (*aG)->x+x;
+				ret->y = (*aG)->y+y;
+				return ret;
+			}
+		}
+	}
+	return ret;
+}
+
+bool isOdd(int64_t number) {
+	return number&1;
 }
 
 void _destroy(Agent** aG) {

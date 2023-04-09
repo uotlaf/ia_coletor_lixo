@@ -36,12 +36,12 @@ Trash* genTrashList(int64_t seed, Window** window, uint8_t trashOrg, uint8_t tra
 	// Bota seed no RNG
 	srand(seed);
 
-	Trash* sLList = newTrash(window, 1);
-	if (!sLList) return NULL;
+	Trash* sLList = NULL;
+	Trash* temp;
 
 	// Gera os lixos orgânicos
-	for (int i = 0; i < trashOrg-1; i++) {
-		Trash* temp = newTrash(window, 1);
+	for (int i = 0; i < trashOrg; i++) {
+		temp = newTrash(window, 1);
 
 		// verifica se um lixo com a mesma coordenada já está na lista
 		if (!checkTrashinList(temp, sLList)) {
@@ -54,7 +54,7 @@ Trash* genTrashList(int64_t seed, Window** window, uint8_t trashOrg, uint8_t tra
 	}
 
 	// Gera os lixos recicláveis
-	for (int i = 0; i < trashRec-1; i++) {
+	for (int i = 0; i < trashRec; i++) {
 		Trash* temp = newTrash(window, 5);
 
 		// verifica se um lixo com a mesma coordenada já está na lista
@@ -82,7 +82,7 @@ bool checkTrashinList(Trash* tr, Trash* list) {
 		} else if (pos->x == tr->x && pos->y == tr->y) { // Igual
 			return true;
 		} else {	// Maior que
-			return false;
+			pos = pos->next;
 		}
 	}
 
@@ -95,7 +95,7 @@ Trash* addTrashinList(Trash* tr, Trash* list) {
 	// tr não pode estar em list
 	// No final retorna a nova lista
 
-	if (!tr || !list) {
+	if (!tr) {
 		return false;
 	}
 

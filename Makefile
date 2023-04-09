@@ -8,7 +8,7 @@ QUANT_LIXO_ORG = 10
 VALOR_MAXIMO = 5
 SEED = 1
 FPS = 60
-INSTANT_DRAW = 1   	# Desenha os objetos de cada vez, em vez de esperar o quadro terminar
+INSTANT_DRAW = 0   	# Desenha os objetos de cada vez, em vez de esperar o quadro terminar
 ENABLE_CONSOLE = 0 	# Liga o console por padrão
 CONSOLE_W = 40	 	# Largura do console. A altura = altura do campo
 DRAW_SHADOW = 1

@@ -18,17 +18,21 @@
 #endif
 #define DEFAULT_AGENT_NAME "Default Agent"
 
+typedef struct __trashLocation__ {
+	uint16_t x, y;
+} TrashLocation;
+
 typedef struct __Agent__ {
 	uint16_t x, y, score;
 	uint16_t oldx, oldy; // Usado para redesenhar o mapa
 	Trash* hold;
-	void* package; // Reservado para agentes específicos
+	char* name;
 	uint16_t (*run)(struct __Agent__** aG, Trash** tr, Window** window);
 	void (*draw)(struct __Agent__** aG, Window** window);
 	void (*drawFOV) (struct __Agent__** aG, Window** window);
 	void (*clean) (struct __Agent__** aG, Window** window);
 	void (*destroy) (struct __Agent__** aG);
-	char* name;
+	void* reserved; // Reservado para agentes específicos
 } Agent;
 
 enum Actions {
@@ -48,7 +52,11 @@ void _drawFOV(Agent** aG, Window** window);
 
 void _clean(Agent** aG, Window** window);
 
-float findYinLine(int x, int Ax, int Ay, int Bx, int By);
+float findYinLine(uint16_t x, uint16_t Ax, uint16_t Ay, uint16_t Bx, uint16_t By);
+
+TrashLocation* checkForTrashInFOV(Agent** aG, Trash** trList);
+
+bool isOdd(int64_t number);
 
 void _destroy(Agent** aG);
 

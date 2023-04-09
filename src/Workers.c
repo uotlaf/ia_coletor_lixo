@@ -65,6 +65,7 @@ void* inputWorker(void* workerPKG) {
 								(*pkg->window)->tpsLimit		= defaultOptions.tpsLimit;
 								(*pkg->window)->console.row		= defaultOptions.fieldRows;
 								(*pkg->window)->console.historySize = (*pkg->window)->console.row;
+								(*pkg->window)->pause 			= false;
 								
 								// Prepara o lixo
 								Trash* tempt = genTrashList(defaultOptions.seed, &(*pkg->window), defaultOptions.trashOrg, defaultOptions.trashRec);
@@ -589,9 +590,15 @@ void* updateWorker(void* workerPKG) {
 				// Só continua se pausar
 				if (!((*pkg->window)->pause)) {
 					pthread_mutex_lock(&((*pkg->window))->UpdateLock);
-					(*pkg->agent)->run(pkg->agent, &(*pkg->trash), &(*pkg->window));
+
+					// Se não tem mais nenhum lixo, pausa o programa
+					if (!(*pkg->trash) && !(*pkg->agent)->hold) {
+						(*pkg->window)->pause = true;
+					} else {
+						(*pkg->agent)->run(pkg->agent, &(*pkg->trash), &(*pkg->window));
+						(*pkg->window)->steps++;
+					}
 					pthread_mutex_unlock(&((*pkg->window))->UpdateLock);
-					(*pkg->window)->steps++;
 				}
 				break;
 			case WINSTATE_MENU:
