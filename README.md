@@ -1,4 +1,5 @@
-# ROBÔ COLETOR DE LIXO
+# COLETOR DE LIXO
+![Agente Reativo Simples](/docs/Simple_pt.gif)
 
 ## Regras:
 ### Ambiente
