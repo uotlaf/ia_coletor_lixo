@@ -37,7 +37,7 @@ void* inputWorker(void* workerPKG) {
 
 	do {
 		c = '\0';
-		read(STDIN_FILENO, &c, 1);
+		(void)!read(STDIN_FILENO, &c, 1);
 		switch ((*pkg->window)->state) {
 
 			case WINSTATE_MENU:
@@ -45,8 +45,8 @@ void* inputWorker(void* workerPKG) {
 				// Caratere de controle tem 3 bytes: 27, [ e a direção[A, B, C e D]
 				if (iscntrl(c)) {
 					if (c == 27 ) {
-						read(STDIN_FILENO, &c, 1); // Pula [
-						read(STDIN_FILENO, &c, 1);
+						(void)!read(STDIN_FILENO, &c, 1);; // Pula [
+						(void)!read(STDIN_FILENO, &c, 1);;
 						switch (c) {
 							case 'A': // Cima
 								if (menuSelected > 0) {
@@ -235,8 +235,8 @@ void* inputWorker(void* workerPKG) {
 				// Caratere de controle tem 3 bytes: 27, [ e a direção[A, B, C e D]
 				if (iscntrl(c)) {
 					if (c == 27 ) {
-						read(STDIN_FILENO, &c, 1); // Pula [
-						read(STDIN_FILENO, &c, 1);
+						(void)!read(STDIN_FILENO, &c, 1);; // Pula [
+						(void)!read(STDIN_FILENO, &c, 1);;
 						switch (c) {
 							case 'A': // Cima
 								if (menuSelected > 0) {
@@ -348,8 +348,8 @@ void* inputWorker(void* workerPKG) {
 				// Caratere de controle tem 3 bytes: 27, [ e a direção[A, B, C e D]
 				if (iscntrl(c)) {
 					if (c == 27 ) {
-						read(STDIN_FILENO, &c, 1); // Pula [
-						read(STDIN_FILENO, &c, 1);
+						(void)!read(STDIN_FILENO, &c, 1);; // Pula [
+						(void)!read(STDIN_FILENO, &c, 1);;
 						switch (c) {
 							case '\033': // ESC
 								(*pkg->window)->state = WINSTATE_MENU;
@@ -379,8 +379,8 @@ void* inputWorker(void* workerPKG) {
 			case WINSTATE_EXEC:
 				if (iscntrl(c)) {
 					if (c == 27 ) {
-						read(STDIN_FILENO, &c, 1); // Pula [
-						read(STDIN_FILENO, &c, 1);
+						(void)!read(STDIN_FILENO, &c, 1);; // Pula [
+						(void)!read(STDIN_FILENO, &c, 1);;
 						switch (c) {
 							case '\033': // ESC
 								// Volta para o menu principal
