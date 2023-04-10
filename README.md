@@ -1,6 +1,4 @@
 # COLETOR DE LIXO
-![Agente Reativo Simples](/docs/Simple_pt.gif)
-
 ## Regras:
 ### Ambiente
 - Gerar X lixos orgânicos e X lixos recicláveis
