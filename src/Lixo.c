@@ -50,6 +50,7 @@ Trash* genTrashList(int64_t seed, Window** window, uint8_t trashOrg, uint8_t tra
 		} else {
 			// Pó jogar fora
 			free(temp);
+			i--;
 		}
 	}
 
@@ -64,6 +65,7 @@ Trash* genTrashList(int64_t seed, Window** window, uint8_t trashOrg, uint8_t tra
 		} else {
 			// Pó jogar fora
 			free(temp);
+			i--;
 		}
 	}
 
