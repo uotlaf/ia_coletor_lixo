@@ -40,7 +40,7 @@ Trash* utilitySearchNextTrash(Agent** aG, Trash** trList) {
         newDist = sqrt(pow((*aG)->x - act->x, 2) + pow((*aG)->y - act->y, 2));
 
         // Menor distância e maior valor
-        if ((newDist < oldDist && oldValue >= act->value) || oldDist == 0) {
+        if ((newDist < oldDist && oldValue <= act->value) || oldDist == 0) {
             ret = act;
             oldDist = newDist;
             oldValue = act->value;
